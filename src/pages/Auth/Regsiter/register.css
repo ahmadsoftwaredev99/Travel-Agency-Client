@@ -1,0 +1,217 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+:root {
+  --ink: #16323e;
+  --paper: #faf3e7;
+  --coral: #e2643b;
+  --teal: #2e8f86;
+  --line: #c9b99a;
+  --white: #fffdf8;
+}
+
+.auth-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  background: var(--paper);
+  font-family: "Work Sans", sans-serif;
+  color: var(--ink);
+}
+
+/* ---- Left visual panel ---- */
+.auth-visual {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 60px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.auth-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--paper) 0 2px,
+    transparent 2px 40px
+  );
+}
+
+.auth-visual .tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-visual h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 1.15;
+  max-width: 380px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-stub {
+  border-top: 2px dashed rgba(250, 243, 231, 0.3);
+  padding-top: 20px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* ---- Right form panel ---- */
+.auth-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-card .eyebrow {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.auth-card .eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--teal);
+}
+
+.auth-card h1 {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 32px;
+  margin: 0 0 8px;
+}
+
+.auth-card .sub {
+  opacity: 0.6;
+  font-size: 14px;
+  margin: 0 0 26px;
+}
+
+.auth-error {
+  background: #f7dEDA;
+  color: #b33f27;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.field input {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-family: "Work Sans", sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.field input:focus {
+  outline: 2px solid var(--teal);
+  outline-offset: 1px;
+}
+
+.btn {
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 500;
+}
+
+.btn-solid {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+  background: var(--coral);
+  color: var(--white);
+}
+
+.btn-solid:hover {
+  background: #c94f2b;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: 13px;
+  opacity: 0.7;
+  margin-top: 22px;
+}
+
+.auth-switch a {
+  color: var(--coral);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 860px) {
+  .auth-wrap {
+    grid-template-columns: 1fr;
+  }
+  .auth-visual {
+    padding: 40px;
+    min-height: 220px;
+  }
+  .auth-visual h2 {
+    font-size: 28px;
+  }
+  .auth-form-side {
+    padding: 40px 24px;
+  }
+}

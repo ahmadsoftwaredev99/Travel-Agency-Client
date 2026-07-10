@@ -1,0 +1,142 @@
+/* Header.css */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+.te-navbar {
+  background: #0b1e3d;
+  padding: 0.85rem 0;
+}
+
+.te-brand {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: #f4f1ea !important;
+}
+
+.te-links {
+  gap: 2rem;
+}
+
+.te-link {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #f4f1ea !important;
+  opacity: 0.75;
+  position: relative;
+  padding-bottom: 4px;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.te-link:hover {
+  opacity: 1;
+  color: #2a9d8f !important;
+}
+
+.te-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: #ff6b5b;
+  transition: width 0.2s ease;
+}
+
+.te-link:hover::after {
+  width: 100%;
+}
+
+.te-btn {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 500;
+  border-radius: 999px;
+  height: 38px;
+  padding: 0 1.2rem;
+  border: none;
+}
+
+.te-btn--ghost {
+  background: transparent;
+  color: #f4f1ea !important;
+  border: 1px solid rgba(244, 241, 234, 0.35) !important;
+}
+
+.te-btn--ghost:hover {
+  border-color: #2a9d8f !important;
+  background: rgba(42, 157, 143, 0.12) !important;
+}
+
+.te-btn--solid {
+  background: #ff6b5b !important;
+  color: #0b1e3d !important;
+}
+
+.te-btn--solid:hover {
+  background: #ff8271 !important;
+}
+
+.te-user-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.78rem;
+  background: rgba(244, 241, 234, 0.08) !important;
+  color: #f4f1ea !important;
+  border: 1px solid rgba(244, 241, 234, 0.25) !important;
+}
+
+.te-user-btn:hover {
+  border-color: #ff6b5b !important;
+  background: rgba(255, 107, 91, 0.12) !important;
+}
+
+.te-popover-btn {
+  font-family: 'Work Sans', sans-serif;
+  text-align: left;
+  border-radius: 8px;
+  border: none;
+  background: #f4f1ea;
+  color: #0b1e3d;
+}
+
+.te-popover-btn:hover {
+  background: rgba(42, 157, 143, 0.15) !important;
+}
+
+.te-popover-btn--logout:hover {
+  background: rgba(255, 107, 91, 0.15) !important;
+  color: #b3382a !important;
+}
+
+.te-toggler {
+  border-color: rgba(244, 241, 234, 0.4);
+}
+
+.te-perforation {
+  position: relative;
+  height: 10px;
+  background: repeating-linear-gradient(
+    to right,
+    #ff6b5b 0,
+    #ff6b5b 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+.te-notch {
+  position: absolute;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.te-notch--left {
+  left: 24px;
+}
+
+.te-notch--right {
+  right: 24px;
+}
