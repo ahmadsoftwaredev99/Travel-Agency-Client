@@ -1,0 +1,90 @@
+.status-modal .ant-modal-content {
+  border-radius: 18px;
+  padding: 24px;
+}
+
+.status-modal-content {
+  text-align: center;
+}
+
+.status-title {
+  margin-bottom: 6px !important;
+  font-weight: 700 !important;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.status-btn {
+  height: 55px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.status-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* New */
+.status-btn.new {
+  background: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #1677ff;
+}
+
+.status-btn.new:hover {
+  background: #1677ff !important;
+  color: #fff !important;
+}
+
+/* Pending */
+.status-btn.pending {
+  background: #fff7e6;
+  border: 1px solid #ffd591;
+  color: #d48806;
+}
+
+.status-btn.pending:hover {
+  background: #faad14 !important;
+  color: #fff !important;
+}
+
+/* Rejected */
+.status-btn.rejected {
+  background: #fff1f0;
+  border: 1px solid #ffa39e;
+  color: #cf1322;
+}
+
+.status-btn.rejected:hover {
+  background: #f5222d !important;
+  color: #fff !important;
+}
+
+/* Resolved */
+.status-btn.resolved {
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  color: #389e0d;
+}
+
+.status-btn.resolved:hover {
+  background: #52c41a !important;
+  color: #fff !important;
+}
+
+@media (max-width: 576px) {
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-btn {
+    height: 50px;
+  }
+}

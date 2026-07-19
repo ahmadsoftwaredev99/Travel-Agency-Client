@@ -37,6 +37,7 @@ const initialPackages = {
   price: "",
   duration: "",
   category: "",
+  availablePackages: "",
   image: "",
 };
 
@@ -99,6 +100,7 @@ const Packages = () => {
         price: packages.price,
         duration: packages.duration,
         category: packages.category,
+        availablePackages: packages.availablePackages,
         image: imgURL,
       };
 
@@ -122,7 +124,6 @@ const Packages = () => {
       setResetImg(Date.now());
       setImage(null);
       setOpen(false);
-
     } catch (error) {
       notification.success({
         title: "Failed",
@@ -181,39 +182,47 @@ const Packages = () => {
             </thead>
 
             <tbody>
-              {tourPackage?.map((pkg) => (
-                <tr key={pkg.id} className="ticket-row">
-                  <td className="col-package">
-                    <span className="pkg-name">{pkg.title}</span>
-                  </td>
+              {tourPackage.length > 0 ? (
+                tourPackage?.map((pkg) => (
+                  <tr key={pkg._id} className="ticket-row">
+                    <td className="col-package">
+                      <span className="pkg-name">{pkg.title}</span>
+                    </td>
 
-                  <td className="col-route">
-                    <span className="route">{pkg.route}</span>
-                  </td>
+                    <td className="col-route">
+                      <span className="route">{pkg.route}</span>
+                    </td>
 
-                  <td className="col-duration">{pkg.duration}</td>
+                    <td className="col-duration">{pkg.duration}</td>
 
-                  <td className="col-price">${pkg.price}</td>
+                    <td className="col-price">${pkg.price}</td>
 
-                  <td className="col-action">
-                    <Space>
-                      <button
-                        className="row-action"
-                        onClick={() => handleEdit(pkg?._id)}
-                      >
-                        Edit
-                      </button>
+                    <td className="col-action">
+                      <Space>
+                        <button
+                          className="row-action"
+                          onClick={() => handleEdit(pkg?._id)}
+                        >
+                          Edit
+                        </button>
 
-                      <button
-                        className="row-action row-action--delete"
-                        onClick={() => handleDelete(pkg?._id)}
-                      >
-                        Delete
-                      </button>
-                    </Space>
+                        <button
+                          className="row-action row-action--delete"
+                          onClick={() => handleDelete(pkg?._id)}
+                        >
+                          Delete
+                        </button>
+                      </Space>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center pt-5">
+                    <Title level={3}>No Packages...</Title>
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
@@ -317,6 +326,18 @@ const Packages = () => {
                     placeholder="6 Days / 5 Nights"
                     name="duration"
                     value={packages.duration}
+                    onChange={handleChange}
+                  />
+                </Form.Item>
+              </Col>
+
+              <Col span={24}>
+                <Form.Item label="AvailablePackages" required>
+                  <Input
+                    type="number"
+                    placeholder="Enter how many Package Available"
+                    name="availablePackages"
+                    value={packages.availablePackages}
                     onChange={handleChange}
                   />
                 </Form.Item>

@@ -1,106 +1,129 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { notification } from "antd";
+import { contactSchema } from "../../../utils";
+import { sendEnquiry } from "../../../store/slice/contactSlice";
 import "./contact.css";
 
+const initialState = {
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
+};
+
 const Contact = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
+  const [form, setForm] = useState(initialState);
+  const [loading, setLoading] = useState(false);
+  
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-
-    if (!formData.email || !formData.password) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
     try {
-      // TODO: replace with your actual login API call
-      // const res = await axios.post("/api/auth/login", formData);
-      // save token to Redux + localStorage here
+      setLoading(true);
+      const valid_Enquiry = await contactSchema.validate(form);
 
-      navigate("/dashboard");
-    } catch (err) {
-      setError("Invalid email or password.");
+      await dispatch(sendEnquiry(valid_Enquiry)).unwrap();
+
+      setForm(initialState);
+
+      notification.success({
+        title: "Success",
+        description: "Enquiry Send",
+        duration: 2,
+      });
+    } catch (error) {
+      notification.error({
+        title: "Failed",
+        description: error.message || "Something went wrong!",
+        duration: 2,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="auth-wrap">
-      {/* <div className="auth-visual">
-        <div className="tag">Welcome back</div>
-        <h2>
-          Your bookings, itineraries, and next departure — all in one place.
-        </h2>
-        <div className="auth-stub">
-          <span>Passenger</span>
-          <span>TE · Access</span>
+    <div className="bp-page">
+      <div className="bp-card">
+        <div className="bp-eyebrow">
+          <span className="bp-eyebrow-dash" />
+          Send an enquiry
         </div>
-      </div> */}
+        <h1 className="bp-title">Contact us</h1>
+        <p className="bp-sub">
+          No account needed — we'll reply by email within a day.
+        </p>
 
-      <div className="auth-form-side">
-        <form className="auth-card" onSubmit={handleSubmit}>
-          <div className="eyebrow">Send an enquiry</div>
-          <h1>Contact Us</h1>
-          <p className="sub">
-            No account needed — we'll reply by email within a day.
-          </p>
-
-          {error && <div className="auth-error">{error}</div>}
-
-          <div className="field">
-            <label>FULL NAME</label>
+        <form className="bp-form" onSubmit={handleSubmit}>
+          <div className="bp-field">
+            <label className="bp-label" htmlFor="fullName">
+              Full name
+            </label>
             <input
-              name="fullName"
+              id="fullName"
+              className="bp-input"
+              name="name"
               type="text"
-              placeholder="Name"
-              value={formData.fullName}
+              placeholder="Your Name"
+              value={form.name}
               onChange={handleChange}
             />
           </div>
-          <div className="field">
-            <label>Email</label>
+
+          <div className="bp-field">
+            <label className="bp-label" htmlFor="email">
+              Email
+            </label>
             <input
+              id="email"
+              className="bp-input"
               name="email"
               type="email"
               placeholder="you@example.com"
-              value={formData.email}
+              value={form.email}
               onChange={handleChange}
             />
           </div>
 
-          <div className="field">
-            <label>Subject</label>
+          <div className="bp-field">
+            <label className="bp-label" htmlFor="subject">
+              Subject
+            </label>
             <input
+              id="subject"
+              className="bp-input"
               name="subject"
               type="text"
-              placeholder="Question about Destination"
-              value={formData.subject}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="field">
-            <label>Message</label>
-            <input
-              name="message"
-              type="text"
-              placeholder="Tell us what you need..."
-              value={formData.message} 
+              placeholder="Question about Bali Escape"
+              value={form.subject}
               onChange={handleChange}
             />
           </div>
 
-          <button type="submit" className="btn btn-solid">
-            Submit enquiry →
+          <div className="bp-field">
+            <label className="bp-label" htmlFor="message">
+              Message
+            </label>
+            <textarea
+              id="message"
+              className="bp-input bp-textarea"
+              name="message"
+              placeholder="Tell us what you need..."
+              rows={5}
+              value={form.message}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button type="submit" className="bp-submit" disabled={loading}>
+            Send enquiry <span className="bp-arrow">→</span>
           </button>
         </form>
       </div>

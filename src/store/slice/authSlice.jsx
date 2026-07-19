@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk(
 
       return res.data;
     } catch (error) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.response?.data?.message || error.message || "Registration failed");
     }
   },
 );
@@ -30,7 +30,7 @@ export const loignUser = createAsyncThunk(
 
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data?.message || error.message || "Login failed");
     }
   },
 );
@@ -56,29 +56,46 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state, action) => {
+      .addCase(registerUser.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuth = true;
         state.user = action.payload;
+        state.error = null;
       })
-      .addCase(loignUser.pending, (state, action) => {
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isAuth = false;
+        state.user = null;
+      })
+      .addCase(loignUser.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(loignUser.fulfilled, (state, action) => {
         state.loading = false;
         state.isAuth = true;
         state.user = action.payload;
+        state.error = null;
       })
-      .addCase(logoutUser.pending, (state, action) => {
+      .addCase(loignUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isAuth = false;
+        state.user = null;
+      })
+      .addCase(logoutUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(logoutUser.fulfilled, (state, action) => {
+      .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
         state.isAuth = false;
         state.user = null;
+        state.error = null;
       });
   },
 });

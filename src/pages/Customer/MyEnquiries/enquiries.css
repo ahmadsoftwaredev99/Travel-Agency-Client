@@ -1,0 +1,145 @@
+/* Enquiries.css
+   Standalone stylesheet for the <Enquiries /> component.
+   Plain HTML table, no UI library dependency. */
+
+.enq-wrapper {
+  background: #f6efe3;
+  padding: 40px 40px 80px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.enq-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  max-width: 1040px;
+  margin: 0 auto 24px;
+}
+
+.enq-title {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: 700;
+  font-size: 34px;
+  color: #1f2d3a;
+  margin: 0;
+}
+
+.enq-open-badge {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: #8a8478;
+}
+
+.enq-card {
+  max-width: 1040px;
+  margin: 0 auto;
+  background: #fbf7ee;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(31, 45, 58, 0.04);
+  overflow: hidden;
+}
+
+/* ---- plain table ---- */
+
+.enq-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.enq-table thead th {
+  text-align: left;
+  background: transparent;
+  border-bottom: 1px dashed #e3dccb;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: #a39d8f;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 18px 24px;
+}
+
+.enq-table tbody td {
+  border-bottom: 1px dashed #e9e2d2;
+  padding: 18px 24px;
+  font-size: 14px;
+}
+
+.enq-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.enq-table tbody tr:hover td {
+  background: #f3ecdd;
+}
+
+.enq-align-right {
+  text-align: right;
+}
+
+/* ---- cell content ---- */
+
+.enq-cell {
+  color: #2c3b48;
+}
+
+.enq-cell--name {
+  color: #35618a;
+  font-weight: 500;
+}
+
+.enq-cell--email {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  color: #2c3b48;
+}
+
+.enq-cell--message {
+  color: #2c3b48;
+}
+
+.enq-cell--date {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  color: #35618a;
+}
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  min-width: 90px;
+}
+
+/* Pending */
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+}
+
+/* Approved */
+.status-approved {
+  background: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #75b798;
+}
+
+/* Rejected */
+.status-rejected {
+  background: #f8d7da;
+  color: #842029;
+  border: 1px solid #f1aeb5;
+}
+
+/* Default */
+.status-default {
+  background: #e9ecef;
+  color: #495057;
+  border: 1px solid #ced4da;
+}

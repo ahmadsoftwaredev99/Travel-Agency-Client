@@ -1,0 +1,93 @@
+.user-modal .ant-modal-content {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.user-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 32px;
+  background: linear-gradient(135deg, #fafafa 0%, #f0f2f5 100%);
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-modal__avatar {
+  font-weight: 600;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.user-modal__identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-modal__name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-modal__title {
+  margin: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-modal__subtitle {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.user-modal__role-tag {
+  flex-shrink: 0;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.user-modal__status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.user-modal__status-dot.is-active { background: #52c41a; }
+.user-modal__status-dot.is-suspended { background: #ff4d4f; }
+
+.user-modal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 32px;
+  padding: 28px 32px 32px;
+}
+
+.user-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-modal__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.user-modal__value {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.88);
+}
+
+.user-modal__status-text.is-active { color: #389e0d; font-weight: 500; }
+.user-modal__status-text.is-suspended { color: #cf1322; font-weight: 500; }
+
+@media (max-width: 480px) {
+  .user-modal__grid {
+    grid-template-columns: 1fr;
+  }
+}

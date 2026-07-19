@@ -1,109 +1,133 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "./profile.css";
 import { LockOutlined } from "@ant-design/icons";
-import { Card } from "antd";
+import { Card, Space, Button } from "antd";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import "./profile.css";
+
+const initialState = {
+  name: "",
+  email: "",
+  phone: "",
+  password: "",
+};
 
 const Profile = () => {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
+  const [state, setState] = useState(initialState);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const { user } = useSelector((store) => store.userSlice);
+
+  useEffect(() => {
+    if (user) {
+      setState({
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        password: "",
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    setState((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
 
-    if (!formData.email || !formData.password) {
-      setError("Please fill in all fields.");
-      return;
-    }
+    // TODO: Dispatch update profile action here
+    console.log("Updated Data:", state);
 
-    try {
-      // TODO: replace with your actual login API call
-      // const res = await axios.post("/api/auth/login", formData);
-      // save token to Redux + localStorage here
-
-      navigate("/dashboard");
-    } catch (err) {
-      setError("Invalid email or password.");
-    }
+    setIsEdit(false);
   };
 
   return (
-    <div className="auth-wrap">
-      {/* <div className="auth-visual">
-        <div className="tag">Welcome back</div>
-        <h2>
-          Your bookings, itineraries, and next departure — all in one place.
-        </h2>
-        <div className="auth-stub">
-          <span>Passenger</span>
-          <span>TE · Access</span>
-        </div>
-      </div> */}
-
-      <div className="auth-form-side">
-        <Card className="w-100">
-          <form className="auth-card" onSubmit={handleSubmit}>
-            <h1 className="text-center">Profile</h1>
-
-            {error && <div className="auth-error">{error}</div>}
-
-            <div className="field">
-              <label>FULL NAME</label>
-              <input
-                name="fullName"
-                type="text"
-                placeholder=""
-                value={formData.fullName}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="field">
-              <label>Email</label>
-              <input
-                name="email"
-                type="email"
-                placeholder=""
-                value={formData.email}
-                onChange={handleChange}
-              />
+    <div className="profile-wrap">
+      <Card className="profile-card-shell">
+        <form className="profile-card" onSubmit={handleSubmit}>
+          <div className="profile-identity">
+            <div className="profile-avatar">
+              <LockOutlined className="profile-avatar-icon" />
             </div>
 
-            <div className="field">
-              <label>Phone</label>
-              <input
-                name="phone"
-                type="number"
-                placeholder=""
-                value={formData.subject}
-                onChange={handleChange}
-              />
+            <div>
+              <h1 className="profile-title">Profile</h1>
+              <div className="profile-subtitle">Account details</div>
             </div>
-            <div className="field">
-              <label>New Passoword</label>
+          </div>
+
+          <div className="profile-field">
+            <label>Full Name</label>
+            <input
+              type="text"
+              name="name"
+              value={state.name}
+              disabled={!isEdit}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="profile-field">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={state.email}
+              disabled={!isEdit}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="profile-field">
+            <label>Phone</label>
+            <input
+              type="tel"
+              name="phone"
+              value={state.phone}
+              disabled={!isEdit}
+              onChange={handleChange}
+            />
+          </div>
+
+          {isEdit && (
+            <div className="profile-field">
+              <label>New Password</label>
               <input
-                name="password"
                 type="password"
+                name="password"
+                value={state.password}
                 placeholder="Leave blank to keep current"
-                value={formData.message}
                 onChange={handleChange}
               />
             </div>
+          )}
 
-            <button type="submit" className="btn btn-solid">
+          {!isEdit ? (
+            <button className="profile-submit" onClick={() => setIsEdit(true)}>
               Edit Profile
             </button>
-          </form>
-        </Card>
-      </div>
+          ) : (
+            <div className="profile-actions">
+              <button
+                type="button"
+                className="profile-cancel"
+                onClick={() => setIsEdit(false)}
+              >
+                Cancel
+              </button>
+
+              <button type="submit" className="profile-submit">
+                Save Changes
+              </button>
+            </div>
+          )}
+        </form>
+      </Card>
     </div>
   );
 };

@@ -4,7 +4,13 @@ import { useDispatch } from "react-redux";
 import { loginSchema } from "../../../utils";
 import { loignUser } from "../../../store/slice/authSlice";
 import { message } from "antd";
+import { getPackages } from "../../../store/slice/packageSlice";
+import { getAllUser, getUser } from "../../../store/slice/userSlice";
 import "./Login.css";
+import {
+  getAllEnquiries,
+  getMyEnquiry,
+} from "../../../store/slice/contactSlice";
 
 const Login = () => {
   const initialState = {
@@ -22,12 +28,25 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     try {
-
       const user_details = await loginSchema.validate(formData);
       const res = await dispatch(loignUser(user_details)).unwrap();
-      
+
+      if (res.success === true) {
+        const requests = [
+          dispatch(getPackages()),
+          dispatch(getUser()),
+          dispatch(getMyEnquiryy()),
+        ];
+
+        if (res.role === "admin") {
+          requests.push(dispatch(getAllUser()), dispatch(getAllEnquiries()));
+        }
+
+        await Promise.all(requests);
+      }
+
       if (res.role === "admin") {
         navigate("/admin-dashboard", { replace: true });
       } else {
