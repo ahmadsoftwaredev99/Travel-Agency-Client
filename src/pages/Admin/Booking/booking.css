@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap');
+
+.admin-booking-page {
+  background: #faf6ee;
+  min-height: 100vh;
+  padding: 40px 44px 80px;
+  font-family: "Work Sans", sans-serif;
+  color: #16233b;
+  box-sizing: border-box;
+}
+
+.admin-booking-card {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1.5px dashed #e3d9c2;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.admin-booking-eyebrow {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #e0693f;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.admin-booking-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 32px;
+  color: #16233b;
+  margin: 0;
+}
+
+.admin-booking-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+  background: #ffffff;
+  border: 1px solid #e3d9c2;
+  border-radius: 8px;
+  padding: 6px 14px;
+  display: flex;
+  flex-direction: column;
+  min-width: 75px;
+}
+
+.stat-pill .label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #5b6980;
+}
+
+.stat-pill .val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #16233b;
+}
+
+.stat-pill.pill-pending .val { color: #d46b08; }
+.stat-pill.pill-confirmed .val { color: #2e8f86; }
+.stat-pill.pill-cancelled .val { color: #a6462f; }
+
+/* Tabs */
+.admin-booking-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.admin-booking-tab {
+  background: #ffffff;
+  border: 1px solid #e3d9c2;
+  color: #5b6980;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.admin-booking-tab .tab-badge {
+  background: #faf6ee;
+  color: #16233b;
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.admin-booking-tab:hover {
+  border-color: #16233b;
+  color: #16233b;
+}
+
+.admin-booking-tab.is-active {
+  background: #16233b;
+  border-color: #16233b;
+  color: #faf6ee;
+}
+
+.admin-booking-tab.is-active .tab-badge {
+  background: rgba(250, 246, 238, 0.2);
+  color: #faf6ee;
+}
+
+/* Table */
+.admin-booking-table-wrapper {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e3d9c2;
+  box-shadow: 0 4px 18px rgba(22, 35, 59, 0.04);
+  overflow-x: auto;
+}
+
+.admin-booking-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-booking-table thead th {
+  background: #16233b;
+  color: #faf6ee;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 16px 20px;
+  text-align: left;
+}
+
+.admin-booking-table thead th.text-center { text-align: center; }
+.admin-booking-table thead th.text-right { text-align: right; }
+
+.booking-row td {
+  padding: 16px 20px;
+  border-bottom: 1px dashed #e3d9c2;
+  font-size: 14px;
+  color: #16233b;
+  vertical-align: middle;
+}
+
+.booking-row:last-child td {
+  border-bottom: none;
+}
+
+.booking-row:hover td {
+  background: #faf6ee;
+}
+
+.col-passenger strong {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  color: #16233b;
+}
+
+.col-passenger small {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #5b6980;
+}
+
+.col-package .pkg-title {
+  display: block;
+  font-weight: 600;
+  color: #16233b;
+}
+
+.col-package .pkg-route {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: #2e8f86;
+  text-transform: uppercase;
+}
+
+.col-date {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #5b6980;
+}
+
+.guest-badge {
+  background: #faf6ee;
+  border: 1px solid #e3d9c2;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: #16233b;
+}
+
+.col-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 700;
+  font-size: 15px;
+  color: #e0693f;
+  text-align: right;
+}
+
+.booking-status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.booking-status-badge.status-pending {
+  background: #fffbe6;
+  color: #d46b08;
+  border: 1px solid #ffe58f;
+}
+
+.booking-status-badge.status-confirmed {
+  background: #f6ffed;
+  color: #389e0d;
+  border: 1px solid #b7eb8f;
+}
+
+.booking-status-badge.status-cancelled {
+  background: #fff1f0;
+  color: #cf1322;
+  border: 1px solid #ffa39e;
+}
+
+.booking-action-btn {
+  background: none;
+  border: 1px solid #e3d9c2;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12.5px;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  color: #5b6980;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.booking-action-btn.action-view:hover {
+  background: #faf6ee;
+  color: #16233b;
+  border-color: #16233b;
+}
+
+.booking-action-btn.action-status {
+  color: #2e8f86;
+  border-color: #c4e5e2;
+}
+
+.booking-action-btn.action-status:hover {
+  background: #eef8f7;
+  border-color: #2e8f86;
+}
+
+.booking-action-btn.action-delete {
+  color: #a6462f;
+  border-color: #f4e4de;
+}
+
+.booking-action-btn.action-delete:hover {
+  background: #f4e4de;
+  border-color: #a6462f;
+}
+
+.admin-booking-empty {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+/* Modals */
+.booking-view-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.booking-modal-status-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #faf6ee;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid #e3d9c2;
+}
+
+.quick-status-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.15s ease;
+}
+
+.quick-status-btn.btn-confirm { background: #d1e7dd; color: #0f5132; }
+.quick-status-btn.btn-pending { background: #fff3cd; color: #856404; }
+.quick-status-btn.btn-cancel { background: #f8d7da; color: #842029; }
+.quick-status-btn:hover { opacity: 0.85; }
+
+.status-modal-box {
+  padding: 12px;
+}
+
+.status-buttons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-select-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+}
+
+.status-select-btn.btn-confirmed { background: #f6ffed; border-color: #b7eb8f; color: #389e0d; }
+.status-select-btn.btn-pending { background: #fffbe6; border-color: #ffe58f; color: #d46b08; }
+.status-select-btn.btn-cancelled { background: #fff1f0; border-color: #ffa39e; color: #cf1322; }
+
+.status-select-btn.is-selected {
+  box-shadow: 0 0 0 2px #16233b;
+}
+
+@media (max-width: 768px) {
+  .admin-booking-page {
+    padding: 24px 20px;
+  }
+}

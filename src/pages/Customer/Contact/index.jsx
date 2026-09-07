@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { notification } from "antd";
 import { contactSchema } from "../../../utils";
 import { sendEnquiry } from "../../../store/slice/contactSlice";
@@ -34,15 +34,16 @@ const Contact = () => {
       setForm(initialState);
 
       notification.success({
-        title: "Success",
-        description: "Enquiry Send",
-        duration: 2,
+        message: "Enquiry Sent Successfully",
+        description: "Thank you for reaching out! Our travel concierge will reply within 24 hours.",
+        duration: 3,
       });
     } catch (error) {
+      const errMsg = typeof error === "string" ? error : error?.message || "Failed to submit enquiry";
       notification.error({
-        title: "Failed",
-        description: error.message || "Something went wrong!",
-        duration: 2,
+        message: "Submission Failed",
+        description: errMsg,
+        duration: 3,
       });
     } finally {
       setLoading(false);
@@ -54,11 +55,11 @@ const Contact = () => {
       <div className="bp-card">
         <div className="bp-eyebrow">
           <span className="bp-eyebrow-dash" />
-          Send an enquiry
+          SEND AN ENQUIRY
         </div>
-        <h1 className="bp-title">Contact us</h1>
+        <h1 className="bp-title">Contact Us</h1>
         <p className="bp-sub">
-          No account needed — we'll reply by email within a day.
+          Have a question about an itinerary or custom request? Send us a message and we'll reply by email.
         </p>
 
         <form className="bp-form" onSubmit={handleSubmit}>
@@ -71,15 +72,16 @@ const Contact = () => {
               className="bp-input"
               name="name"
               type="text"
-              placeholder="Your Name"
+              placeholder="Your full name"
               value={form.name}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="bp-field">
             <label className="bp-label" htmlFor="email">
-              Email
+              Email address
             </label>
             <input
               id="email"
@@ -89,6 +91,7 @@ const Contact = () => {
               placeholder="you@example.com"
               value={form.email}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -101,9 +104,10 @@ const Contact = () => {
               className="bp-input"
               name="subject"
               type="text"
-              placeholder="Question about Bali Escape"
+              placeholder="e.g. Custom itinerary for Bali or Swiss Alps"
               value={form.subject}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -115,15 +119,16 @@ const Contact = () => {
               id="message"
               className="bp-input bp-textarea"
               name="message"
-              placeholder="Tell us what you need..."
+              placeholder="Tell us what you're planning, dates, or specific requirements..."
               rows={5}
               value={form.message}
               onChange={handleChange}
+              required
             />
           </div>
 
           <button type="submit" className="bp-submit" disabled={loading}>
-            Send enquiry <span className="bp-arrow">→</span>
+            {loading ? "Sending enquiry..." : "Send Enquiry →"}
           </button>
         </form>
       </div>

@@ -1,19 +1,4 @@
-
-:root {
-  --ink-900: #0f172a;
-  --ink-700: #334155;
-  --slate-500: #64748b;
-  --slate-200: #e2e8f0;
-  --slate-100: #f1f5f9;
-  --amber: #cf6a3d;
-  --paper: #ffffff;
-  --paper-bg: #faf3e7;
-  --canvas: #eef2f6;
-  --accent: #0f766e;
-  --accent-soft: #ccfbf1;
-  --accent-ring: rgba(15, 118, 110, 0.18);
-  --danger: #b91c1c;
-}
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600&display=swap');
 
 .profile-wrap {
   min-height: 100vh;
@@ -21,16 +6,19 @@
   align-items: center;
   justify-content: center;
   padding: 48px 20px;
-  background: var(--paper-bg);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #faf6ee;
+  font-family: "Work Sans", sans-serif;
+  color: #16233b;
 }
 
 .profile-card-shell {
   width: 100%;
-  max-width: 440px;
-  border-radius: 20px !important;
-  border: 1px solid var(--slate-200) !important;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 20px 40px -24px rgba(15, 23, 42, 0.18) !important;
+  max-width: 480px;
+  border-radius: 18px !important;
+  border: 1px solid #e3d9c2 !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 24px rgba(22, 35, 59, 0.06) !important;
+  overflow: hidden;
 }
 
 .profile-card-shell .ant-card-body {
@@ -41,53 +29,64 @@
   padding: 36px 32px 32px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
 }
 
 /* ---------- Identity header ---------- */
-
 .profile-identity {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--slate-100);
+  padding-bottom: 20px;
+  border-bottom: 1.5px dashed #e3d9c2;
 }
 
 .profile-avatar {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--amber);
-  box-shadow: 0 0 0 4px var(--accent-ring);
-  transition: box-shadow 0.25s ease;
+  background: #16233b;
+  box-shadow: 0 0 0 4px rgba(46, 143, 134, 0.18);
 }
 
-.profile-avatar-icon {
-  font-size: 20px;
-  color: var(--paper);
+.profile-avatar-initial {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #faf6ee;
+}
+
+.profile-eyebrow {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2e8f86;
+  font-weight: 600;
+  margin-bottom: 2px;
 }
 
 .profile-title {
   margin: 0;
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--ink-900);
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #16233b;
 }
 
 .profile-subtitle {
-  margin-top: 2px;
-  font-size: 13px;
-  color: var(--slate-500);
+  margin-top: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: #5b6980;
 }
 
 /* ---------- Fields ---------- */
-
 .profile-field {
   display: flex;
   flex-direction: column;
@@ -95,78 +94,106 @@
 }
 
 .profile-field label {
+  font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--slate-500);
+  color: #5b6980;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .profile-field input {
   width: 100%;
   box-sizing: border-box;
-  font-size: 14.5px;
-  color: var(--ink-900);
-  padding: 10px 2px;
-  border: none;
-  border-bottom: 1.5px solid var(--slate-200);
-  background: transparent;
-  border-radius: 0;
+  font-size: 14px;
+  font-family: "Work Sans", sans-serif;
+  color: #16233b;
+  padding: 10px 12px;
+  border: 1px solid #e3d9c2;
+  background: #ffffff;
+  border-radius: 8px;
   outline: none;
-  transition: border-color 0.2s ease, background-color 0.2s ease, padding 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .profile-field input:disabled {
-  color: var(--ink-700);
-  cursor: default;
-}
-
-.profile-field input:not(:disabled) {
-  background: var(--slate-100);
-  border-bottom-color: transparent;
-  border-radius: 8px;
-  padding: 10px 12px;
+  background: #faf6ee;
+  color: #5b6980;
+  border-color: #eee8d8;
+  cursor: not-allowed;
 }
 
 .profile-field input:not(:disabled):focus {
-  background: var(--paper);
-  box-shadow: 0 0 0 2px var(--accent-ring);
+  border-color: #2e8f86;
+  box-shadow: 0 0 0 2px rgba(46, 143, 134, 0.18);
 }
 
-.profile-field input::placeholder {
-  color: #94a3b8;
+.profile-password-toggle {
+  margin-top: -6px;
+}
+
+.profile-toggle-btn {
+  background: none;
+  border: none;
+  color: #2e8f86;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-toggle-btn:hover {
+  text-decoration: underline;
+}
+
+.profile-password-block {
+  background: #faf6ee;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid #e3d9c2;
 }
 
 /* ---------- Buttons ---------- */
-
 .profile-submit,
 .profile-cancel {
-  height: 42px;
+  height: 44px;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  transition: all 0.15s ease;
+  font-family: "Work Sans", sans-serif;
 }
 
 .profile-submit {
   width: 100%;
   border: none;
   color: #ffffff;
-  background: var(--amber);
+  background: #e0693f;
 }
 
 .profile-submit:hover {
-  background: #b95c33;
+  background: #c85a34;
 }
 
-.profile-submit:active {
-  transform: scale(0.98);
+.profile-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .profile-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .profile-actions .profile-submit {
@@ -175,29 +202,13 @@
 
 .profile-cancel {
   flex: 1;
-  border: 1.5px solid var(--slate-200);
-  background: var(--paper);
-  color: var(--ink-700);
+  border: 1px solid #e3d9c2;
+  background: #ffffff;
+  color: #5b6980;
 }
 
 .profile-cancel:hover {
-  border-color: #cbd5e1;
-  background: var(--slate-100);
-}
-
-/* ---------- Focus visibility for accessibility ---------- */
-
-.profile-submit:focus-visible,
-.profile-cancel:focus-visible,
-.profile-field input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* ---------- Mobile ---------- */
-
-@media (max-width: 480px) {
-  .profile-card {
-    padding: 28px 20px 24px;
-  }
+  border-color: #16233b;
+  color: #16233b;
+  background: #faf6ee;
 }

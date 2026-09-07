@@ -2,15 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSchema } from "../../../utils";
-import { loignUser } from "../../../store/slice/authSlice";
+import { loginUser } from "../../../store/slice/authSlice";
 import { message } from "antd";
 import { getPackages } from "../../../store/slice/packageSlice";
 import { getAllUser, getUser } from "../../../store/slice/userSlice";
-import "./Login.css";
-import {
-  getAllEnquiries,
-  getMyEnquiry,
-} from "../../../store/slice/contactSlice";
+import { getAllEnquiries, getMyEnquiry } from "../../../store/slice/contactSlice";
+import { getAllBookings, getMyBookings } from "../../../store/slice/bookingSlice";
+import "./login.css";
 
 const Login = () => {
   const initialState = {
@@ -31,31 +29,36 @@ const Login = () => {
     setLoading(true);
     try {
       const user_details = await loginSchema.validate(formData);
-      const res = await dispatch(loignUser(user_details)).unwrap();
+      const res = await dispatch(loginUser(user_details)).unwrap();
 
-      if (res.success === true) {
-        const requests = [
-          dispatch(getPackages()),
-          dispatch(getUser()),
-          dispatch(getMyEnquiryy()),
-        ];
+      // Trigger relevant data loading
+      const requests = [
+        dispatch(getPackages()),
+        dispatch(getUser()),
+        dispatch(getMyEnquiry()),
+        dispatch(getMyBookings()),
+      ];
 
-        if (res.role === "admin") {
-          requests.push(dispatch(getAllUser()), dispatch(getAllEnquiries()));
-        }
-
-        await Promise.all(requests);
+      if (res?.role === "admin") {
+        requests.push(
+          dispatch(getAllUser()),
+          dispatch(getAllEnquiries()),
+          dispatch(getAllBookings())
+        );
       }
 
-      if (res.role === "admin") {
+      await Promise.allSettled(requests);
+
+      message.success(`Welcome back, ${res?.name || "Traveler"}!`);
+
+      if (res?.role === "admin") {
         navigate("/admin-dashboard", { replace: true });
       } else {
-        navigate("/user-side", { replace: true });
+        navigate("/customer-dashboard", { replace: true });
       }
-
-      message.success("User Login");
     } catch (error) {
-      message.error("Something went wrong!");
+      const errMsg = typeof error === "string" ? error : error?.message || "Invalid credentials";
+      message.error(errMsg);
     } finally {
       setLoading(false);
     }
@@ -88,6 +91,7 @@ const Login = () => {
               placeholder="you@example.com"
               value={formData.email}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -99,11 +103,12 @@ const Login = () => {
               placeholder="••••••••"
               value={formData.password}
               onChange={handleChange}
+              required
             />
           </div>
 
           <button type="submit" className="btn btn-solid" disabled={loading}>
-            Log in →
+            {loading ? "Logging in..." : "Log in →"}
           </button>
 
           <div className="auth-switch">

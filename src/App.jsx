@@ -4,24 +4,29 @@ import { getPackages } from "./store/slice/packageSlice";
 import Loader from "./components/Loader";
 import Routing from "./routing";
 import { getAllUser, getUser } from "./store/slice/userSlice";
-import "./App.css";
 import { getAllEnquiries, getMyEnquiry } from "./store/slice/contactSlice";
+import { getAllBookings, getMyBookings } from "./store/slice/bookingSlice";
+import "./App.css";
 
 const App = () => {
   const { isAuth, loading, user } = useSelector((store) => store.authSlice);
   const isAdmin = user?.role === "admin";
-
   const dispatch = useDispatch();
+
   useEffect(() => {
+    // Always fetch packages for landing page & customer side
+    dispatch(getPackages());
+
     if (!isAuth) return;
 
-    dispatch(getPackages());
     dispatch(getUser());
-    dispatch(getMyEnquiry())
+    dispatch(getMyEnquiry());
+    dispatch(getMyBookings());
 
     if (isAdmin) {
       dispatch(getAllUser());
-      dispatch(getAllEnquiries())
+      dispatch(getAllEnquiries());
+      dispatch(getAllBookings());
     }
   }, [dispatch, isAuth, isAdmin]);
 

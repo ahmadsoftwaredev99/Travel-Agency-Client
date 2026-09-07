@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Input, message } from "antd";
+import { message } from "antd";
 import { registerSchema } from "../../../utils";
-import "./register.css";
 import { registerUser } from "../../../store/slice/authSlice";
+import "./register.css";
 
 const Register = () => {
   const initialState = {
@@ -28,15 +28,14 @@ const Register = () => {
     setLoading(true);
     try {
       const user_details = await registerSchema.validate(formData);
-      const res = await dispatch(registerUser(user_details)).unwrap();
+      await dispatch(registerUser(user_details)).unwrap();
 
       setFormData(initialState);
-
-      navigate("/user-side");
-
-      message.success("user register");
+      message.success("Account created successfully! Welcome aboard.");
+      navigate("/customer-dashboard", { replace: true });
     } catch (error) {
-      message.error(error.message);
+      const errMsg = typeof error === "string" ? error : error?.message || "Registration failed";
+      message.error(errMsg);
     } finally {
       setLoading(false);
     }
@@ -61,50 +60,54 @@ const Register = () => {
 
           <div className="field">
             <label>Full name</label>
-            <Input
+            <input
               name="name"
               type="text"
-              placeholder="your name"
+              placeholder="Your name"
               value={formData.name}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="field">
             <label>Email</label>
-            <Input
+            <input
               name="email"
               type="email"
               placeholder="you@example.com"
               value={formData.email}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="field">
             <label>Phone</label>
-            <Input
+            <input
               name="phone"
               type="text"
-              placeholder="+92 3XX XXXXXXX"
+              placeholder="03001234567 (11 digits)"
               value={formData.phone}
               onChange={handleChange}
+              required
             />
           </div>
 
           <div className="field">
             <label>Password</label>
-            <Input
+            <input
               name="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="•••••••• (min 6 chars)"
               value={formData.password}
               onChange={handleChange}
+              required
             />
           </div>
 
           <button type="submit" className="btn btn-solid" disabled={loading}>
-            Create account →
+            {loading ? "Creating account..." : "Create account →"}
           </button>
 
           <div className="auth-switch">

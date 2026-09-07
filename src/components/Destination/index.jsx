@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { message } from "antd";
 import axiosInstance from "../../store/axiosInstance";
+import { createBooking } from "../../store/slice/bookingSlice";
 import "./destinations.css";
-
-const API_BASE = "http://localhost:5000/api/packages";
 
 export default function Destinations({ onSelectPackage, onViewPackage }) {
   const { isAuth } = useSelector((store) => store.authSlice);
@@ -12,7 +12,6 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
   const [error, setError] = useState("");
   const [selectedPackage, setSelectedPackage] = useState(null);
 
-  
   const [search, setSearch] = useState("");
   const [location, setLocation] = useState("");
   const [category, setCategory] = useState("");
@@ -24,6 +23,8 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
   const [numOfPeople, setNumOfPeople] = useState(1);
   const [bookingMessage, setBookingMessage] = useState("");
   const [bookingLoading, setBookingLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const fetchPackages = async () => {
     setLoading(true);
@@ -38,15 +39,13 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
       params.append("page", page);
       params.append("limit", 9);
 
-      const res = await fetch(`${API_BASE}?${params.toString()}`);
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "Something went wrong");
+      const res = await axiosInstance.get(`/packages?${params.toString()}`);
+      const data = res.data;
 
       setPackages(data.packages || []);
       setTotalPages(data.totalPages || 1);
     } catch (err) {
-      setError(err.message);
+      setError(err?.response?.data?.message || err.message || "Failed to load packages");
     } finally {
       setLoading(false);
     }
@@ -54,7 +53,6 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
 
   useEffect(() => {
     fetchPackages();
-    
   }, [page]);
 
   const handleSearchSubmit = (e) => {
@@ -75,6 +73,7 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
 
   const openPackageDetails = (pkg) => {
     setSelectedPackage(pkg);
+    setBookingMessage("");
     if (onViewPackage) {
       onViewPackage(pkg);
     }
@@ -90,11 +89,11 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
 
     if (!selectedPackage) return;
     if (!isAuth) {
-      setBookingMessage("Please log in first to create a booking.");
+      message.warning("Please log in first to create a booking reservation.");
       return;
     }
     if (!bookingDate || !numOfPeople) {
-      setBookingMessage("Please add a travel date and number of people.");
+      message.error("Please provide a travel date and number of people.");
       return;
     }
 
@@ -102,28 +101,36 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
       setBookingLoading(true);
       setBookingMessage("");
 
-      const res = await axiosInstance.post("/bookings", {
-        packageId: selectedPackage._id || selectedPackage.id,
-        travelDate: bookingDate,
-        numOfPeople: Number(numOfPeople),
-      });
+      await dispatch(
+        createBooking({
+          packageId: selectedPackage._id || selectedPackage.id,
+          travelDate: bookingDate,
+          numOfPeople: Number(numOfPeople),
+        })
+      ).unwrap();
 
-      if (res.status === 201) {
-        setBookingMessage("Booking request created successfully.");
-        setBookingDate("");
-        setNumOfPeople(1);
-      }
+      message.success("Booking request created successfully! View in your dashboard.");
+      setBookingMessage("✓ Booking request created successfully.");
+      setBookingDate("");
+      setNumOfPeople(1);
     } catch (err) {
-      const message = err?.response?.data?.message || "Booking failed. Please try again.";
-      setBookingMessage(message);
+      const msg = typeof err === "string" ? err : err?.message || "Booking failed. Please try again.";
+      message.error(msg);
+      setBookingMessage(msg);
     } finally {
       setBookingLoading(false);
     }
   };
 
+  const getImage = (pkg) => {
+    if (!pkg) return "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80";
+    if (Array.isArray(pkg.image) && pkg.image.length > 0) return pkg.image[0];
+    if (typeof pkg.image === "string" && pkg.image) return pkg.image;
+    return "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80";
+  };
+
   return (
     <div className="destinations-page">
-  
       <section className="dest-hero">
         <div className="eyebrow">
           <span className="eyebrow-dash" />
@@ -136,7 +143,6 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
         </p>
       </section>
 
-  
       <section className="dest-filters">
         <form className="filters-form" onSubmit={handleSearchSubmit}>
           <input
@@ -156,6 +162,8 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
             <option value="Beach">Beach</option>
             <option value="City">City</option>
             <option value="Adventure">Adventure</option>
+            <option value="Honeymoon">Honeymoon</option>
+            <option value="Family">Family</option>
           </select>
           <input
             type="number"
@@ -178,7 +186,6 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
         </form>
       </section>
 
-      
       <section className="dest-results">
         {loading && <p className="dest-state">Loading packages...</p>}
         {error && <p className="dest-state dest-error">{error}</p>}
@@ -195,20 +202,16 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
             <div className="pkg-detail-grid">
               <div className="pkg-detail-image-wrap">
                 <img
-                  src={
-                    selectedPackage.images && selectedPackage.images.length > 0
-                      ? selectedPackage.images[0]
-                      : "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80"
-                  }
+                  src={getImage(selectedPackage)}
                   alt={selectedPackage.title}
                   className="pkg-detail-image"
                 />
                 <span className="rating-badge">
-                  {(selectedPackage.rating || 0).toFixed(1)}
+                  {(selectedPackage.rating || 5.0).toFixed(1)}
                   <small>RATED</small>
                 </span>
-                {!selectedPackage.availability && (
-                  <span className="sold-out-badge">Not Available</span>
+                {(selectedPackage.availablePackages ?? 0) <= 0 && (
+                  <span className="sold-out-badge">Sold Out</span>
                 )}
               </div>
 
@@ -226,22 +229,23 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
                   <button
                     type="button"
                     className="btn btn-primary"
-                    disabled={!selectedPackage.availability}
+                    disabled={(selectedPackage.availablePackages ?? 0) <= 0}
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectPackage && onSelectPackage(selectedPackage);
                     }}
                   >
-                    {selectedPackage.availability ? "Book this package" : "Sold Out"}
+                    {(selectedPackage.availablePackages ?? 0) > 0 ? "Book this package" : "Sold Out"}
                   </button>
                 </div>
 
                 <form className="booking-form" onSubmit={handleBookingSubmit}>
-                  <h3 className="booking-form-title">Book this package</h3>
+                  <h3 className="booking-form-title">Reserve this package</h3>
                   <label className="booking-field">
                     <span>Travel date</span>
                     <input
                       type="date"
+                      min={new Date().toISOString().split("T")[0]}
                       value={bookingDate}
                       onChange={(e) => setBookingDate(e.target.value)}
                       required
@@ -252,13 +256,18 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
                     <input
                       type="number"
                       min="1"
+                      max={selectedPackage.availablePackages || 10}
                       value={numOfPeople}
-                      onChange={(e) => setNumOfPeople(e.target.value)}
+                      onChange={(e) => setNumOfPeople(Math.max(1, Number(e.target.value)))}
                       required
                     />
                   </label>
-                  <button type="submit" className="btn btn-primary" disabled={bookingLoading || !selectedPackage.availability}>
-                    {bookingLoading ? "Creating booking..." : "Confirm booking"}
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={bookingLoading || (selectedPackage.availablePackages ?? 0) <= 0}
+                  >
+                    {bookingLoading ? "Creating booking..." : "Confirm Booking Reservation"}
                   </button>
                   {bookingMessage && <p className="booking-message">{bookingMessage}</p>}
                 </form>
@@ -277,8 +286,12 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
                     <span className="fact-value">{selectedPackage.duration} days</span>
                   </div>
                   <div className="fact">
-                    <span className="fact-label">Availability</span>
-                    <span className="fact-value">{selectedPackage.availability ? "Open" : "Closed"}</span>
+                    <span className="fact-label">Available Spots</span>
+                    <span className="fact-value">
+                      {(selectedPackage.availablePackages ?? 0) > 0
+                        ? `${selectedPackage.availablePackages} Spots`
+                        : "Closed"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -287,59 +300,57 @@ export default function Destinations({ onSelectPackage, onViewPackage }) {
         )}
 
         <div className="dest-grid">
-          {packages.map((pkg) => (
-            <div
-              className="dest-card"
-              key={pkg._id}
-              onClick={() => openPackageDetails(pkg)}
-            >
-              <div className="dest-image-wrap">
-                <img
-                  src={
-                    pkg.images && pkg.images.length > 0
-                      ? pkg.images[0]
-                      : "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&q=80"
-                  }
-                  alt={pkg.title}
-                  className="dest-image"
-                />
-                <span className="rating-badge">
-                  {(pkg.rating || 0).toFixed(1)}
-                  <small>RATED</small>
-                </span>
-                {!pkg.availability && (
-                  <span className="sold-out-badge">Not Available</span>
-                )}
-              </div>
-
-              <div className="dest-body">
-                <div className="dest-meta">
-                  {pkg.route || pkg.location} · {pkg.duration} days
+          {packages.map((pkg) => {
+            const isAvailable = (pkg.availablePackages ?? 0) > 0;
+            return (
+              <div
+                className="dest-card"
+                key={pkg._id}
+                onClick={() => openPackageDetails(pkg)}
+              >
+                <div className="dest-image-wrap">
+                  <img
+                    src={getImage(pkg)}
+                    alt={pkg.title}
+                    className="dest-image"
+                  />
+                  <span className="rating-badge">
+                    {(pkg.rating || 5.0).toFixed(1)}
+                    <small>RATED</small>
+                  </span>
+                  {!isAvailable && (
+                    <span className="sold-out-badge">Sold Out</span>
+                  )}
                 </div>
-                <h3 className="dest-title">{pkg.title}</h3>
-                <p className="dest-tagline">{pkg.description}</p>
 
-                <div className="dest-footer">
-                  <div className="dest-price">
-                    ${pkg.price} <span>/ person</span>
+                <div className="dest-body">
+                  <div className="dest-meta">
+                    {pkg.route || pkg.location} · {pkg.duration} days
                   </div>
-                  <button
-                    className="btn-view"
-                    disabled={!pkg.availability}
-                    onClick={(e) => {
-                      e.stopPropagation(); 
-                      onSelectPackage && onSelectPackage(pkg);
-                    }}
-                  >
-                    {pkg.availability ? "Select" : "Sold Out"}
-                  </button>
+                  <h3 className="dest-title">{pkg.title}</h3>
+                  <p className="dest-tagline">{pkg.description}</p>
+
+                  <div className="dest-footer">
+                    <div className="dest-price">
+                      ${pkg.price} <span>/ person</span>
+                    </div>
+                    <button
+                      className="btn-view"
+                      disabled={!isAvailable}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openPackageDetails(pkg);
+                      }}
+                    >
+                      {isAvailable ? "View Details" : "Sold Out"}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
-        
         {!loading && totalPages > 1 && (
           <div className="dest-pagination">
             <button

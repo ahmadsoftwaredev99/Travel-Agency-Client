@@ -1,52 +1,56 @@
-import { Button, Space } from "antd";
+import { Button, Space, Popover } from "antd";
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppstoreOutlined,
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Popover } from "antd";
-import { useDispatch } from "react-redux";
 import { logoutUser } from "../../store/slice/authSlice";
+import Logo from "../Logo";
 import "./header.css";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { isAuth } = useSelector((store) => store.authSlice);
-  const user = JSON.parse(localStorage.getItem("user"));
-  
+  const navigate = useNavigate();
+  const { isAuth, user } = useSelector((store) => store.authSlice);
+
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    navigate("/user-side");
+  };
+
+  const dashboardPath = user?.role === "admin" ? "/admin-dashboard" : "/customer-dashboard";
+
   const content = (
     <div className="d-flex flex-column gap-1 te-popover">
-      <Link to="/customer-dashboard">
+      <Link to={dashboardPath}>
         <Button className="te-popover-btn" icon={<AppstoreOutlined />}>
-          | Dashboard
+          {user?.role === "admin" ? "Admin Console" : "My Dashboard"}
         </Button>
       </Link>
       <Button
         className="te-popover-btn te-popover-btn--logout"
         icon={<LogoutOutlined />}
-        onClick={() => dispatch(logoutUser())}
+        onClick={handleLogout}
       >
-        | Log-out
+        Log Out
       </Button>
     </div>
   );
-
-  
 
   return (
     <div>
       <nav className="navbar navbar-expand-lg te-navbar">
         <div className="container">
           <Link className="navbar-brand te-brand" to="/user-side">
-            Navbar
+            <span className="te-brand-text">Travel<strong>Ease</strong></span>
           </Link>
 
           {/* Right side items */}
           <div className="d-flex align-items-center ms-auto order-lg-2">
-            {isAuth ? (
+            {isAuth && user ? (
               <Popover
                 placement="bottom"
                 content={content}
@@ -54,7 +58,7 @@ const Header = () => {
                 overlayClassName="te-popover-overlay"
               >
                 <Button className="rounded-pill te-user-btn" icon={<UserOutlined />}>
-                  {user.name}
+                  {user?.name || "Account"}
                 </Button>
               </Popover>
             ) : (
@@ -72,7 +76,7 @@ const Header = () => {
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContent"
-               
+              aria-label="Toggle navigation"
             >
               <span className="navbar-toggler-icon"></span>
             </button>
@@ -93,10 +97,9 @@ const Header = () => {
                   About
                 </Link>
               </li>
-
               <li className="nav-item">
                 <Link className="nav-link te-link" to="/user-side/destinations">
-                  Destination
+                  Destinations
                 </Link>
               </li>
             </ul>
@@ -104,7 +107,7 @@ const Header = () => {
         </div>
       </nav>
 
-      {/* boarding-pass perforation strip */}
+      {/* Boarding-pass perforation strip */}
       <div className="te-perforation" aria-hidden="true">
         <span className="te-notch te-notch--left" />
         <span className="te-notch te-notch--right" />

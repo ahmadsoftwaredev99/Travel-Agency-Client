@@ -1,15 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
 
-:root {
+.auth-wrap {
   --ink: #16323e;
   --paper: #faf3e7;
   --coral: #e2643b;
   --teal: #2e8f86;
   --line: #c9b99a;
   --white: #fffdf8;
-}
 
-.auth-wrap {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
@@ -18,8 +16,7 @@
   color: var(--ink);
 }
 
-/* ---- Left visual panel ---- */
-.auth-visual {
+.auth-wrap .auth-visual {
   background: var(--ink);
   color: var(--paper);
   padding: 60px;
@@ -30,7 +27,7 @@
   overflow: hidden;
 }
 
-.auth-visual::after {
+.auth-wrap .auth-visual::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -42,17 +39,18 @@
   );
 }
 
-.auth-visual .tag {
+.auth-wrap .auth-visual .tag {
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   letter-spacing: 0.1em;
-  opacity: 0.6;
+  opacity: 0.7;
   text-transform: uppercase;
   position: relative;
   z-index: 1;
+  color: #faf3e7;
 }
 
-.auth-visual h2 {
+.auth-wrap .auth-visual h2 {
   font-family: "Fraunces", serif;
   font-weight: 600;
   font-size: 40px;
@@ -63,7 +61,7 @@
   z-index: 1;
 }
 
-.auth-stub {
+.auth-wrap .auth-stub {
   border-top: 2px dashed rgba(250, 243, 231, 0.3);
   padding-top: 20px;
   position: relative;
@@ -75,20 +73,19 @@
   opacity: 0.7;
 }
 
-/* ---- Right form panel ---- */
-.auth-form-side {
+.auth-wrap .auth-form-side {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 60px;
 }
 
-.auth-card {
+.auth-wrap .auth-card {
   width: 100%;
   max-width: 380px;
 }
 
-.auth-card .eyebrow {
+.auth-wrap .auth-card .eyebrow {
   font-family: "IBM Plex Mono", monospace;
   font-size: 12px;
   letter-spacing: 0.12em;
@@ -100,51 +97,44 @@
   margin-bottom: 14px;
 }
 
-.auth-card .eyebrow::before {
+.auth-wrap .auth-card .eyebrow::before {
   content: "";
   width: 22px;
   height: 1px;
   background: var(--teal);
 }
 
-.auth-card h1 {
+.auth-wrap .auth-card h1 {
   font-family: "Fraunces", serif;
   font-weight: 600;
   font-size: 32px;
   margin: 0 0 8px;
+  color: var(--ink);
 }
 
-.auth-card .sub {
-  opacity: 0.6;
+.auth-wrap .auth-card .sub {
+  opacity: 0.7;
   font-size: 14px;
   margin: 0 0 26px;
+  color: var(--ink);
 }
 
-.auth-error {
-  background: #f7dEDA;
-  color: #b33f27;
-  font-size: 13px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 18px;
-  font-family: "IBM Plex Mono", monospace;
-}
-
-.field {
+.auth-wrap .field {
   margin-bottom: 20px;
 }
 
-.field label {
+.auth-wrap .field label {
   font-family: "IBM Plex Mono", monospace;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  opacity: 0.6;
+  opacity: 0.7;
   display: block;
   margin-bottom: 8px;
+  color: var(--ink);
 }
 
-.field input {
+.auth-wrap .field input {
   width: 100%;
   padding: 13px 14px;
   border-radius: 8px;
@@ -153,14 +143,15 @@
   font-family: "Work Sans", sans-serif;
   font-size: 14px;
   color: var(--ink);
+  box-sizing: border-box;
 }
 
-.field input:focus {
+.auth-wrap .field input:focus {
   outline: 2px solid var(--teal);
   outline-offset: 1px;
 }
 
-.btn {
+.auth-wrap .btn {
   font-size: 14px;
   padding: 10px 20px;
   border-radius: 100px;
@@ -170,48 +161,53 @@
   font-weight: 500;
 }
 
-.btn-solid {
+.auth-wrap .btn-solid {
   width: 100%;
   padding: 14px;
   margin-top: 6px;
   background: var(--coral);
   color: var(--white);
+  font-weight: 600;
 }
 
-.btn-solid:hover {
+.auth-wrap .btn-solid:hover {
   background: #c94f2b;
 }
 
-.auth-switch {
+.auth-wrap .btn-solid:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-wrap .auth-switch {
   text-align: center;
   font-size: 13px;
-  opacity: 0.7;
+  opacity: 0.8;
   margin-top: 22px;
 }
 
-.auth-switch a {
+.auth-wrap .auth-switch a {
   color: var(--coral);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.auth-switch a:hover {
+.auth-wrap .auth-switch a:hover {
   text-decoration: underline;
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 860px) {
   .auth-wrap {
     grid-template-columns: 1fr;
   }
-  .auth-visual {
+  .auth-wrap .auth-visual {
     padding: 40px;
     min-height: 220px;
   }
-  .auth-visual h2 {
+  .auth-wrap .auth-visual h2 {
     font-size: 28px;
   }
-  .auth-form-side {
+  .auth-wrap .auth-form-side {
     padding: 40px 24px;
   }
 }

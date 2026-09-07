@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { LogoutOutlined } from "@ant-design/icons";
 import { adminPaths, customerPath } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,35 +9,41 @@ import { logoutUser } from "../../store/slice/authSlice";
 import "./sidebar.css";
 
 const SideBar = () => {
-  const [menu, setMenu] = useState(customerPath);
   const { user } = useSelector((store) => store.authSlice);
+  const [menu, setMenu] = useState(user?.role === "admin" ? adminPaths : customerPath);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    navigate("/user-side");
   };
 
-
   useEffect(() => {
-    if (user && user.role === "admin") {
+    if (user?.role === "admin") {
       setMenu(adminPaths);
+    } else {
+      setMenu(customerPath);
     }
-  }, []);
+  }, [user]);
+
+  const isAdmin = user?.role === "admin";
 
   return (
     <div className="admin-sidebar">
       <div className="admin-sidebar__header">
-        {user.role === "admin" ? (
+        {isAdmin ? (
           <div>
             <span className="admin-sidebar__eyebrow">Admin Access</span>
             <p className="admin-sidebar__title">Control Tower</p>
           </div>
         ) : (
-          <>
-            <span className="admin-sidebar__eyebrow">Customer Access</span>
-          </>
+          <div>
+            <span className="admin-sidebar__eyebrow">Traveler Portal</span>
+            <p className="admin-sidebar__title">My Journey</p>
+          </div>
         )}
-        <span className="text-white short-form">TAS</span>
+        <span className="text-white short-form">TE</span>
       </div>
 
       <div className="admin-sidebar__divider" />

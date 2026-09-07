@@ -1,7 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./Home.css";
 
-const packages = [
+const fallbackPackages = [
   {
     id: 1,
     image:
@@ -36,37 +38,54 @@ const packages = [
     price: 1240,
   },
 ];
- 
+
 export default function HomePage() {
+  const { tourPackage } = useSelector((store) => store.packageSlice);
+
+  const displayPackages = tourPackage && tourPackage.length >= 3
+    ? tourPackage.slice(0, 3).map((p) => ({
+        id: p._id,
+        image: Array.isArray(p.image) ? p.image[0] : p.image || fallbackPackages[0].image,
+        rating: p.rating || 4.9,
+        route: p.route || p.location,
+        duration: `${p.duration} days`,
+        title: p.title,
+        tagline: p.description,
+        price: p.price,
+      }))
+    : fallbackPackages;
+
   return (
     <div className="home-page">
-      
       <section className="hero">
         <div className="hero-inner">
           <div className="eyebrow">
             <span className="eyebrow-dash" />
             DEPARTURES WORLDWIDE
           </div>
- 
+
           <h1 className="headline">
             Book your <em>next journey</em>
             <br />
             before the gate closes.
           </h1>
- 
+
           <p className="subtext">
             Curated travel packages across 40+ destinations — flights, stays,
             and itineraries planned so you don't have to.
           </p>
- 
+
           <div className="cta-row">
-            <button className="btn btn-primary">Browse packages</button>
-            <button className="btn btn-outline">How it works</button>
+            <Link to="/user-side/destinations" className="btn btn-primary" style={{ textDecoration: "none" }}>
+              Browse packages
+            </Link>
+            <Link to="/user-side/about" className="btn btn-outline" style={{ textDecoration: "none" }}>
+              How it works
+            </Link>
           </div>
         </div>
       </section>
- 
-      
+
       <section className="popular">
         <div className="popular-head">
           <div>
@@ -76,32 +95,36 @@ export default function HomePage() {
             </div>
             <h2 className="popular-title">Popular packages</h2>
           </div>
-          <a href="#" className="view-all">View all packages</a>
+          <Link to="/user-side/destinations" className="view-all">
+            View all packages →
+          </Link>
         </div>
- 
+
         <div className="popular-grid">
-          {packages.map((pkg) => (
+          {displayPackages.map((pkg) => (
             <div className="package-card" key={pkg.id}>
               <div className="package-image-wrap">
                 <img src={pkg.image} alt={pkg.title} className="package-image" />
                 <span className="rating-badge">
-                  {pkg.rating.toFixed(1)}
+                  {Number(pkg.rating).toFixed(1)}
                   <small>RATED</small>
                 </span>
               </div>
- 
+
               <div className="package-body">
                 <div className="package-meta">
                   {pkg.route} · {pkg.duration}
                 </div>
                 <h3 className="package-title">{pkg.title}</h3>
                 <p className="package-tagline">{pkg.tagline}</p>
- 
+
                 <div className="package-footer">
                   <div className="package-price">
                     ${pkg.price} <span>/ person</span>
                   </div>
-                  <button className="btn-view">View</button>
+                  <Link to="/user-side/destinations" className="btn-view" style={{ textDecoration: "none" }}>
+                    View
+                  </Link>
                 </div>
               </div>
             </div>
